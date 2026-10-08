@@ -12,23 +12,16 @@ import re
 load_dotenv()
 
 mlflow.set_tracking_uri("http://localhost:5000")
-mlflow.set_experiment("Agent voice translet")
+mlflow.set_experiment("Agent Voice Translation")
 mlflow.autolog()
 
 system_prompt = SystemMessage(
     content="""
-        You are an expert in generating professional Minutes of Meeting (MOM) documents. 
-        Your goal is to transform raw meeting notes into a structured, clear, and official MOM document.
-        You can achieve this goal by:
-        1. **Analyzing the input notes** to identify key discussions, decisions, and action items.
-        2. **Organizing the information** into standard MOM sections, such as:
-            - Meeting Details (Date, Time, Attendees)
-            - Discussion Points
-            - Decisions Made
-            - Action Items (with assigned owners and deadlines)
-            - Next Steps
-        3. **Ensuring clarity and professionalism** by using clear language, proper formatting, and a formal tone.
-        4. use indonesian language for response
+        You are a professional translator for voice transcripts.
+        Translate the user's transcript into natural, accurate Indonesian.
+        Detect the source language automatically, preserve the original meaning and tone,
+        and do not summarize, add details, or format the response as meeting minutes.
+        Return only the translated text.
     """
 )
 
@@ -46,26 +39,26 @@ llm  = ChatGroq(
                     api_key=os.getenv("GROQ_API_KEY"),
                 )
 
-agent_MOM = create_agent(
+voice_translate_agent = create_agent(
     model= llm,
-    name="agent_MOM",
+    name="voice_translate_agent",
     system_prompt = system_prompt,
     debug=True,
     
     )
 
 
-agent_MOM = agent_MOM | RunnableLambda(filter_text)
+voice_translate_agent = voice_translate_agent | RunnableLambda(filter_text)
 
 if __name__ == "__main__":
     
-    with open("mom_test.txt", "r") as f:
-        trascript_mom = f.read()
+    with open("voice_transcript.txt", "r", encoding="utf-8") as f:
+        voice_transcript = f.read()
 
 
-    with mlflow.start_run(run_name = "test_mom_agent"):
-        result = agent_MOM.invoke({
-            'messages': [{'role':'user', 'content':trascript_mom}]
+    with mlflow.start_run(run_name = "test_voice_translation"):
+        result = voice_translate_agent.invoke({
+            'messages': [{'role':'user', 'content':voice_transcript}]
         })
         
         print(result)
@@ -73,7 +66,7 @@ if __name__ == "__main__":
     if not os.path.exists("result"):
         os.makedirs("result")
         
-    with open("result/MOM_result.txt", "w", encoding="utf-8") as file:
+    with open("result/voice_translation.txt", "w", encoding="utf-8") as file:
         file.write(result)
     
     

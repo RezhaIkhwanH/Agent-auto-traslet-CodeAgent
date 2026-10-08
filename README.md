@@ -49,10 +49,10 @@ uv run uvicorn main:app --reload
 Alamat lokal dan endpoint:
 
 - Health check: `http://127.0.0.1:8000/health`
-- Agent LangServe: `http://127.0.0.1:8000/agent_MOM`
-- LangServe Playground: `http://127.0.0.1:8000/agent_MOM/playground`
+- Agent LangServe: `http://127.0.0.1:8000/voice-translate`
+- LangServe Playground: `http://127.0.0.1:8000/voice-translate/playground`
 - Swagger UI: `http://127.0.0.1:8000/docs`
-- Invoke API: `POST http://127.0.0.1:8000/agent_MOM/invoke`
+- Invoke API: `POST http://127.0.0.1:8000/voice-translate/invoke`
 
 LangServe menerima input berupa `messages`, contohnya:
 
@@ -74,13 +74,13 @@ uv run mlflow server --host 127.0.0.1 --port 5000
 
 ## Menjalankan Pengujian Lokal
 
-Script lokal di `agent.py` membaca `mom_test.txt` dari direktori proyek dan menyimpan respons ke `result/MOM_result.txt`:
+Script lokal di `agent.py` membaca `voice_transcript.txt` dari direktori proyek dan menyimpan terjemahan ke `result/voice_translation.txt`:
 
 ```bash
 uv run python agent.py
 ```
 
-Untuk menguji client HTTP, pastikan server sudah berjalan dan sesuaikan file input pada `testClient.py`, lalu jalankan:
+Untuk menguji client HTTP, pastikan server sudah berjalan dan siapkan `voice_transcript.txt` di direktori proyek, lalu jalankan:
 
 ```bash
 uv run python testClient.py
@@ -88,4 +88,4 @@ uv run python testClient.py
 
 ## Catatan Implementasi
 
-README ini menjelaskan peran repositori sebagai backend agent untuk integrasi voice translate. Namun, prompt pada kode `agent.py` saat ini masih menginstruksikan model untuk menyusun Minutes of Meeting (MOM), dan endpoint LangServe masih bernama `/agent_MOM`. Perbarui prompt dan penamaan endpoint di kode jika ingin perilaku implementasi sepenuhnya menjadi penerjemah voice.
+Endpoint ini menerima teks transkrip, bukan file audio. Bot Discord menangani penerimaan voice dan menyiapkan transkrip, sedangkan agent menerjemahkan teks tersebut ke Bahasa Indonesia.

@@ -4,15 +4,15 @@ from pydantic import BaseModel
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from langserve import add_routes
-from agent import agent_MOM 
+from agent import voice_translate_agent
 
 
 class CustomAgentInput(BaseModel):
     messages: list[dict] 
     
 app = FastAPI(
-    title="Agent voice translet",
-    description="Agent voice translet",
+    title="Voice Translation Agent",
+    description="API agent untuk menerjemahkan transkrip voice ke Bahasa Indonesia.",
     version="1.0.0"
 )
 
@@ -26,8 +26,8 @@ app.add_middleware(
 
 add_routes(
     app, 
-    agent_MOM, 
-    path="/agent_MOM",
+    voice_translate_agent,
+    path="/voice-translate",
     playground_type="default",
     input_type=CustomAgentInput
 )

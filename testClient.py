@@ -3,11 +3,11 @@ import requests
 
 # 1. Tentukan URL endpoint LangServe Anda
 # LangServe secara otomatis membuat suffix '/invoke' untuk eksekusi chain
-URL_API = "http://127.0.0.1:8000/agent_MOM/invoke"
+URL_API = "http://127.0.0.1:8000/voice-translate/invoke"
 
 def send_transcript_to_api(file_path: str):
     try:
-        # 2. Membaca isi file transkrip rapat (MOM)
+        # 2. Membaca isi transkrip hasil speech-to-text
         with open(file_path, "r", encoding="utf-8") as f:
             transcript_content = f.read()
         
@@ -35,16 +35,16 @@ def send_transcript_to_api(file_path: str):
             response_data = response.json()
             
             # Mengambil output teks bersih hasil akhir dari struktur response LangServe
-            final_mom = response_data.get("output", "")
+            translated_text = response_data.get("output", "")
             
-            print("\n================ HASIL NOTULENSI RAPAT (MOM) ================\n")
-            print(final_mom)
-            print("\n=============================================================\n")
+            print("\n================ HASIL TERJEMAHAN VOICE ================\n")
+            print(translated_text)
+            print("\n=========================================================\n")
             
             # Opsional: Simpan hasil balasan API ke file lokal baru
-            with open("MOM_from_api.txt", "w", encoding="utf-8") as out_file:
-                out_file.write(final_mom)
-                print("💾 Hasil MoM berhasil disimpan ke 'MOM_from_api.txt'")
+            with open("voice_translation_from_api.txt", "w", encoding="utf-8") as out_file:
+                out_file.write(translated_text)
+                print("Hasil terjemahan disimpan ke 'voice_translation_from_api.txt'")
                 
         else:
             print(f"❌ Gagal mendapatkan respons. Status Code: {response.status_code}")
@@ -56,5 +56,5 @@ def send_transcript_to_api(file_path: str):
         print(f"❌ Terjadi kesalahan teknis: {str(e)}")
 
 if __name__ == "__main__":
-    # Pastikan file 'mom_test.txt' Anda berada di folder yang sama
-    send_transcript_to_api("mom_test.txt")
+    # Siapkan file transkrip voice hasil speech-to-text di direktori proyek.
+    send_transcript_to_api("voice_transcript.txt")
