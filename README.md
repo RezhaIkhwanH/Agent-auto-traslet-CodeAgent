@@ -89,4 +89,3 @@ uv run python testClient.py
 ## Catatan Implementasi
 
 README ini menjelaskan peran repositori sebagai backend agent untuk integrasi voice translate. Namun, prompt pada kode `agent.py` saat ini masih menginstruksikan model untuk menyusun Minutes of Meeting (MOM), dan endpoint LangServe masih bernama `/agent_MOM`. Perbarui prompt dan penamaan endpoint di kode jika ingin perilaku implementasi sepenuhnya menjadi penerjemah voice.
-
