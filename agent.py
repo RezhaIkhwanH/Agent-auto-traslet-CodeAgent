@@ -12,7 +12,7 @@ import re
 load_dotenv()
 
 mlflow.set_tracking_uri("http://localhost:5000")
-mlflow.set_experiment("Agent Notetaker MOM")
+mlflow.set_experiment("Agent voice translet")
 mlflow.autolog()
 
 system_prompt = SystemMessage(

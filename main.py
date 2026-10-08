@@ -11,8 +11,8 @@ class CustomAgentInput(BaseModel):
     messages: list[dict] 
     
 app = FastAPI(
-    title="Agent notetaker MOM",
-    description="Agent notetaker MOM",
+    title="Agent voice translet",
+    description="Agent voice translet",
     version="1.0.0"
 )
 
